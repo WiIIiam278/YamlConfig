@@ -1,0 +1,8 @@
+type: list
+name:
+  test: hello
+subjects:
+  - bob
+  - joe
+  - jacob
+  - john

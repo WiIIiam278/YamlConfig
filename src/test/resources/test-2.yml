@@ -1,0 +1,14 @@
+type: list
+subjects:
+  william:
+    name: William
+    type: Human
+    role: Test subject
+    birth_day: 11
+    birth_month: 6
+  foo:
+    name: Foobert
+    type: Robot
+    role: Test subject
+    birth_day: 7
+    birth_month: 7
