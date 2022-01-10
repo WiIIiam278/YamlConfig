@@ -22,6 +22,13 @@ public class Config implements ConfigNode {
         this.configData = configData;
     }
 
+    /**
+     * Load the {@link File} as a {@link Config} implementing {@link ConfigNode}
+     *
+     * @param file The YAML-based {@link File} to load
+     * @return The loaded {@link Config} object
+     * @throws FileNotFoundException If the file does not exist
+     */
     public static Config loadFile(@NotNull File file) throws FileNotFoundException {
         if (!file.exists()) throw new FileNotFoundException("File not loaded");
         final InputStream fileInputStream = new FileInputStream(file);
@@ -36,56 +43,93 @@ public class Config implements ConfigNode {
         }
         if (currentObject instanceof Map) {
             @SuppressWarnings("unchecked") Map<String, Object> currentMap = (Map<String, Object>) currentObject;
-            if (nodeTrawl >= parents.length-1) {
+            if (nodeTrawl >= parents.length - 1) {
                 return currentMap;
             }
             return getChild(parents, (nodeTrawl + 1), currentMap.get(parents[nodeTrawl]));
         }
-        throw new IllegalArgumentException("Invalid node path");
+        return null;
     }
 
     @SuppressWarnings("unchecked")
     private Set<String> getNodes(String path) {
         String[] parentNodes = path.split("\\.");
         int nodeTrawl = 0;
-        Map<String, Object> childObject = getChild(parentNodes, nodeTrawl, configData);
-        if (childObject.get(path) instanceof Map) {
-            return ((Map<String, Object>) childObject.get(path)).keySet();
+        Map<String, Object> deepestNode = getChild(parentNodes, nodeTrawl, configData);
+        if (deepestNode != null) {
+            if (deepestNode.get(parentNodes[parentNodes.length - 1]) instanceof Map) {
+                return ((Map<String, Object>) deepestNode.get(parentNodes[parentNodes.length - 1])).keySet();
+            }
         }
-        throw new IllegalArgumentException("Invalid parent node path");
+        return null;
     }
 
     @Override
     public Object get(String path) {
-        String[] parentNodes = path.split("\\.");
+        final String[] parentNodes = path.split("\\.");
         int nodeTrawl = 0;
-        return getChild(parentNodes, nodeTrawl, configData).get(parentNodes[parentNodes.length-1]);
+        Map<String, Object> child = getChild(parentNodes, nodeTrawl, configData);
+        return child != null ? child.get(parentNodes[parentNodes.length - 1]) : null;
     }
 
     @Override
     public String getString(String path) {
-        return (String) get(path);
+        final Object object = get(path);
+        return object != null ? (String) object : null;
     }
 
     @Override
-    public boolean getBoolean(String path) {
-        return (Boolean) get(path);
+    public String getString(String path, String fallback) {
+        final String string = getString(path);
+        return string != null ? string : fallback;
     }
 
     @Override
-    public int getInt(String path) {
-        return (Integer) get(path);
+    public Boolean getBoolean(String path) {
+        final Object object = get(path);
+        return object != null ? (Boolean) object : null;
     }
 
     @Override
-    public double getDouble(String path) {
-        return (Double) get(path);
+    public boolean getBoolean(String path, boolean fallback) {
+        final Boolean bool = getBoolean(path);
+        return bool != null ? bool : fallback;
     }
 
     @Override
-    @SuppressWarnings ("unchecked")
+    public Integer getInt(String path) {
+        final Object object = get(path);
+        return object != null ? (Integer) object : null;
+    }
+
+    @Override
+    public int getInt(String path, int fallback) {
+        final Integer integer = getInt(path);
+        return integer != null ? integer : fallback;
+    }
+
+    @Override
+    public Double getDouble(String path) {
+        final Object object = get(path);
+        return object != null ? (Double) object : null;
+    }
+
+    @Override
+    public double getDouble(String path, double fallback) {
+        final Double doubleNum = getDouble(path);
+        return doubleNum != null ? doubleNum : fallback;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public ArrayList<String> getStringList(String path) {
-        return (ArrayList<String>) get(path);
+        final Object object = get(path);
+        return object != null ? (ArrayList<String>) object : null;
+    }
+
+    @Override
+    public ArrayList<String> getStringList(String path, ArrayList<String> fallback) {
+        return null;
     }
 
     @Override
