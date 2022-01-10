@@ -1,7 +1,9 @@
 # YamlConfig
 [![](https://jitpack.io/v/WiIIiam278/YamlConfig.svg)](https://jitpack.io/#WiIIiam278/YamlConfig)
 
-Library that provides simple methods for reading basic data types from YAML config files for easy configs, inspired by [Bukkit's user-friendly approach](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/configuration/file/FileConfiguration.html). It does not support writing config  files currently.
+Library that provides simple methods for reading basic data types from YAML config files for easy configs, inspired by [Bukkit's user-friendly approach](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/configuration/file/FileConfiguration.html). It does not support writing config files currently.
+
+Javadocs are available [here](https://javadoc.jitpack.io/com/github/WiIIiam278/YamlConfig/latest/javadoc/).
 
 ## Including
 YamlConfig is available on JitPack.
